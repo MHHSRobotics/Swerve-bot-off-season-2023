@@ -130,6 +130,7 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
     }
+
     @Override
     public void simulationPeriodic() {
       ChassisSpeeds chassisSpeed = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
@@ -140,7 +141,6 @@ public class Swerve extends SubsystemBase {
           SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
           angle.set(-Units.radiansToDegrees(m_simYaw));
     }
-    
 
     
 }

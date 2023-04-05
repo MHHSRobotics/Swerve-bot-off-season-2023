@@ -30,6 +30,8 @@ public class RobotContainer {
 
     private final FieldSim m_fieldSim = new FieldSim(s_Swerve);
 
+    private final Auto m_auto = new Auto(s_Swerve);
+
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -69,7 +71,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        return m_auto.getAuto();
 
 
         

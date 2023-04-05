@@ -5,30 +5,36 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
+import static frc.robot.Constants.Swerve.kModuleTranslations;
 
+import com.ctre.phoenix.unmanaged.Unmanaged;
+import com.kauailabs.navx.frc.AHRS;;;
 
-import static frc.robot.Constants.Swerve.kModuleTranslations;;;
-
-
+/*This subsystem we pulled from Team 4201, the Vitruvian bots.
+ It allows us to simulate a swerve drive in the SIM GUI. */
 public class FieldSim extends SubsystemBase{
+ 
   private final Swerve m_swerveDrive;
   private double m_simYaw;
-  SimDevice gyroSim = SimDevice.create("navX-Sensor[0]", SPI.Port.kMXP.value);
-
-
-
+  /* This field is used in the simulatiion GUI */
   private final Field2d m_field2d = new Field2d();
 
-
+  /*Stores the position of each swerve module */
   private Pose2d[] m_swerveModulePoses = {
           new Pose2d(),
           new Pose2d(),
@@ -36,9 +42,9 @@ public class FieldSim extends SubsystemBase{
           new Pose2d()
   };
 
+    /*Constructor which provides a swerve subsystem for the simulation to access */
   public FieldSim(Swerve s_Swerve) {
     m_swerveDrive = s_Swerve;
-   
   }
 
   public void initSim() {}
@@ -46,7 +52,7 @@ public class FieldSim extends SubsystemBase{
   public Field2d getField2d() {
     return m_field2d;
   }
-
+  /*Updates the robotpose to be used in simulation */
   private void updateRobotPoses() {
     m_field2d.setRobotPose(m_swerveDrive.swerveOdometry.getPoseMeters());
 
@@ -66,6 +72,7 @@ public class FieldSim extends SubsystemBase{
     m_field2d.getObject("Swerve Modules").setPoses(m_swerveModulePoses);
   }
 
+    /*Puts data onto the SIM GUI  */
   @Override
   public void periodic() {
     updateRobotPoses();
@@ -74,6 +81,5 @@ public class FieldSim extends SubsystemBase{
 
     SmartDashboard.putData("Field2d", m_field2d);
   }
-  
-  
+
 }

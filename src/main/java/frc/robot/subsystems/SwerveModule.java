@@ -148,10 +148,10 @@ public class SwerveModule extends SubsystemBase{
         angleController.setPositionPIDWrappingMaxInput(2 * Math.PI);
         angleController.setPositionPIDWrappingMinInput(0);
         resetToAbsolute();
-        //TODO: Add this in REV HArdware client or here
-        //angleEncoder.setPositionConversionFactor(Constants.kSwerve.ANGLE_ROTATIONS_TO_RADIANS);
-        //angleEncoder.setVelocityConversionFactor(Constants.kSwerve.ANGLE_RPM_TO_RADIANS_PER_SECOND);
-        //angleEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - canCoderOffsetDeg
+        /*TODO: Add below in REV HArdware client or here
+        angleEncoder.setPositionConversionFactor(Constants.kSwerve.ANGLE_ROTATIONS_TO_RADIANS);
+        angleEncoder.setVelocityConversionFactor(Constants.kSwerve.ANGLE_RPM_TO_RADIANS_PER_SECOND);
+        angleEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - canCoderOffsetDeg*/
     }
 
     private void configDriveMotor(){        
@@ -167,10 +167,10 @@ public class SwerveModule extends SubsystemBase{
         driveMotor.burnFlash();
         driveEncoder.setPosition(0.0);
 
-        //TODO: Add this in REV HArdware client or here
-        //driveEncoder.setPositionConversionFactor(Constants.kSwerve.DRIVE_ROTATIONS_TO_METERS);
-        //driveEncoder.setVelocityConversionFactor(Constants.kSwerve.DRIVE_RPM_TO_METERS_PER_SECOND);
-        //driveEncoder.setPosition(0);
+        /*TODO: Add below in REV HArdware client or here
+        driveEncoder.setPositionConversionFactor(Constants.kSwerve.DRIVE_ROTATIONS_TO_METERS);
+        driveEncoder.setVelocityConversionFactor(Constants.kSwerve.DRIVE_RPM_TO_METERS_PER_SECOND);
+        driveEncoder.setPosition(0); */
     }
 
     public double getVelocity()
