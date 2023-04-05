@@ -21,17 +21,15 @@ public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
 
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+
+    private final FieldSim m_fieldSim = new FieldSim(s_Swerve);
+
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -39,15 +37,17 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
+                () -> driver.getRawAxis(0), 
+                () -> -driver.getRawAxis(1), 
+                () -> driver.getRawAxis(2), 
                 () -> robotCentric.getAsBoolean()
             )
         );
 
         // Configure the button bindings
         configureButtonBindings();
+        m_fieldSim.initSim();
+
     }
 
     /**
@@ -58,7 +58,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        new JoystickButton(driver, XboxController.Button.kY.value)
+        .onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     }
 
     /**
@@ -69,5 +70,11 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return new exampleAuto(s_Swerve);
+
+
+        
     }
+    public void periodic() {
+        m_fieldSim.periodic();
+      }
 }
