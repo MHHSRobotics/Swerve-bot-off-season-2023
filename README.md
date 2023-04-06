@@ -7,9 +7,11 @@ Our swerve robot uses:<br>
 - REV NEO Motors, <br>
 - CTRE CANcoders,<br>
 - REV Spark Maxes, <br>
-- and Kauai Labs navX2. <br>
+- and Kauai Labs navX2. 
+<br> 
 <br>
-Please see the [Master Branch](https://github.com/MHHSRobotics/Swerve-bot-off-season-2023/tree/master) for the project code. 
+
+Please see the [Master Branch](https://github.com/MHHSRobotics/Swerve-bot-off-season-2023/tree/master) for the project code
 <br>
 
 ## Special Thanks
