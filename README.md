@@ -3,10 +3,11 @@
 
 Our swerve drive project for the 2023 swerve development. <br> <br> 
 Our swerve robot uses:<br>
-REV NEO Motors, <br>
-CTRE CANcoders,<br>
-REV Spark Maxes, <br>
-Kauai Labs navX2. <br>
+- SDS MK4i Swerve Modules, <br>
+- REV NEO Motors, <br>
+- CTRE CANcoders,<br>
+- REV Spark Maxes, <br>
+- and Kauai Labs navX2. <br>
 <br>
 Please see the [Master Branch](https://github.com/MHHSRobotics/Swerve-bot-off-season-2023/tree/master) for the project code. 
 <br>
