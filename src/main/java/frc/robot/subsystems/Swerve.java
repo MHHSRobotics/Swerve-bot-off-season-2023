@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/* System created by FRFC 364. Modified and documented by FRC 5137 */
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] swerveMods;
@@ -31,7 +32,10 @@ public class Swerve extends SubsystemBase {
     public ADXRS450_GyroSim gyroSim;
     private double m_simYaw;
 
-
+    /**
+     * Swerve Substsemm that controls all modules simulataneously.
+     * Contains Gyro control and simulation.
+     */
     public Swerve() {
         gyro = new ADXRS450_Gyro(SPI.Port.kMXP);
         gyroSim = new ADXRS450_GyroSim(gyro);
@@ -55,6 +59,14 @@ public class Swerve extends SubsystemBase {
         
     }
 
+    /**
+     * Controlls all indivudal swerve modules based on input. Consult Joaquin if Confused. 
+     * @param translation a velocity x and y in m/s. 
+     * @param rotation a rotation value in rad/s.
+     * @param fieldRelative if the robot should be moved along an x-y plane with a fixed x and y 
+     * direction or will instead move according to the faced direction such as in Tank Drive. 
+     * @param isOpenLoop if the robot should be controlled using velocity feedback or not.
+     */
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(

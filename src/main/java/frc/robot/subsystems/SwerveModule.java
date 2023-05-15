@@ -21,7 +21,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
+/* Swerve Module Subsystem that controls individual modules. Created by FRC 364 and modified by FRC 5137. */
 public class SwerveModule extends SubsystemBase{
     public int moduleNumber;
     private Rotation2d angleOffset;
@@ -45,6 +45,11 @@ public class SwerveModule extends SubsystemBase{
 
     private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
+    /**
+     * Object for controlling each individual swerve module.
+     * @param moduleNumber the ID assigned to each swerveModule(0-3). Check Constants for explanation of each number. 
+     * @param moduleConstants the natural angle offset of the module, when facing straight, according to the absolute encoder. 
+     */
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
@@ -66,21 +71,38 @@ public class SwerveModule extends SubsystemBase{
         configDriveMotor();
 
         lastAngle = getState().angle;
+       
+       /*For simulation only */
         if (RobotBase.isSimulation()) {
             REVPhysicsSim.getInstance().addSparkMax(driveMotor, DCMotor.getNEO(1));
             REVPhysicsSim.getInstance().addSparkMax(angleMotor, DCMotor.getNEO(1));
             driveController.setP(1, 2);
           }
-      
     }
 
 
+    /**
+     * Sets the angle motors and drive motors to move based on desired
+     * movement from Swerve Drive Subsystem. Optimizes turning to avoid overotation. 
+     * Consult Joaquin if confused. 
+     * @param desiredState how the swerve subsystem wants the specific module to move. 
+     * @param isOpenLoop if the directional speed should use feedback control. 
+     */
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         desiredState = CTREModuleState.optimize(desiredState, getState().angle); 
         setAngle(desiredState);
         setSpeed(desiredState, isOpenLoop);
     }
 
+    /**
+     * Last step of the process used to control the individual modules drive speed directly. 
+     * @param desiredState a paramater representing the desired module movement.
+     * @param isOpenLoop decideds if it should be feedback or non-feedback controlled. 
+     * If true:
+     * determines a percent output based upon desiredState (typically for TeleOp). 
+     * If false:
+     * uses velocity feedback control to move precisely (typically for Auto).
+     */
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Swerve.maxSpeed;
@@ -95,6 +117,10 @@ public class SwerveModule extends SubsystemBase{
         
     }
 
+    /**
+     * Tells the angleController to move to a specific angle using position control. 
+     * @param desiredState the desired movement of the specific module. 
+     */
     private void setAngle(SwerveModuleState desiredState){
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         angleController.setReference(angle.getDegrees(), ControlType.kPosition);
@@ -106,6 +132,11 @@ public class SwerveModule extends SubsystemBase{
           }
     }
 
+
+    /**
+     * Gets the angle of the module wheel. 
+     * @return the current angle of the module wheel in degrees. 
+     */
     private Rotation2d getAngle(){
         
         
@@ -121,10 +152,18 @@ public class SwerveModule extends SubsystemBase{
        
     }
 
+    /**
+     * Gets the angle of the module from the absolute encoder.
+     * @return absolute encoder angle in degrees.
+     */
     public Rotation2d getCanCoder(){
         return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
     }
 
+    /**
+     * Makes sure that angle controller contains current CAN Coder 
+     * reading. 
+     */
     public void resetToAbsolute(){
         double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
         integratedAngleEncoder.setPosition(absolutePosition);
