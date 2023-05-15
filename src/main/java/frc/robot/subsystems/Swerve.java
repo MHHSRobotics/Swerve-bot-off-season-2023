@@ -88,7 +88,14 @@ public class Swerve extends SubsystemBase {
         }
     }    
 
-    /* Used by SwerveControllerCommand in Auto */
+   /**
+    * A method for the PathPlanner swerveController to drive the robot in 
+    * autonomous mode / along given paths. 
+    * Assumes closed loop control rather than using a boolean as parameter. 
+    * Consult Joaquin if confused.
+    * @param desiredStates the desired movement determined in m/s for translation
+    * and rad/s for rotation. 
+    */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
         
