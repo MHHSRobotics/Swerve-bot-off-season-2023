@@ -22,6 +22,10 @@ public class Auto {
     private ArrayList<PathPlannerTrajectory> exampleAuto = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("examplePath", new PathConstraints(4, 3));
 
 
+    /**
+     * Auto system that will run auto paths using pathplanner
+     * @param swerveDrive the swerve subsystem that the auto system should control 
+     */
     public Auto(Swerve swerveDrive)
     {
         /*The swerve subsystem which is initialized for use by the auto system */
@@ -40,8 +44,11 @@ public class Auto {
          swerveDrive); //The required system to run auto -- makes sure that it uses the command scheduler properly to prevent any driving interferences
     }
 
-    /*A method used to return an auto path to be scheduled in Auto mode -- 
-    This method can be edited to allow for selection of different path groups*/
+    /**
+     * A method used to return an auto path to be scheduled in Auto mode 
+     * This method can be edited to allow for selection of different path groups
+     * @return a runnable auto command for scheduling
+    */
     public Command getAuto()
     {
         /*Call the full auto method to recieve a command that will run an autopath */

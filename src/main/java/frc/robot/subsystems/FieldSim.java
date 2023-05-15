@@ -26,7 +26,9 @@ import com.ctre.phoenix.unmanaged.Unmanaged;
 import com.kauailabs.navx.frc.AHRS;;;
 
 /*This subsystem we pulled from Team 4201, the Vitruvian bots.
- It allows us to simulate a swerve drive in the SIM GUI. */
+ It allows us to simulate a swerve drive in the SIM GUI.
+ It has been modified by 5137 and is not completely representative 
+ of their individual project and format*/
 public class FieldSim extends SubsystemBase{
  
   private final Swerve m_swerveDrive;
