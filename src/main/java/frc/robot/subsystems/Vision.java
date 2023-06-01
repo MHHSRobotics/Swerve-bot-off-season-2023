@@ -31,7 +31,6 @@ public class Vision extends SubsystemBase
         try 
         {
           aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-          System.out.println(aprilTagFieldLayout);
         } 
         catch (IOException e) 
         {
@@ -52,6 +51,8 @@ public class Vision extends SubsystemBase
             searchRow = 1;
         case "rightCone":
             searchRow = 2;
+        default :
+            searchRow = 1;
         }
 
         List<Pose2d> poseList = new ArrayList<>(Arrays.asList(Constants.VisionConstants.alignArray[searchRow]));
