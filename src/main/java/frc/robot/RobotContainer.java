@@ -66,13 +66,13 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         new JoystickButton(driver, XboxController.Button.kX.value)
-        .onTrue(new AlignVision(s_Swerve, vision, "leftCone"));
+        .whileTrue(new AlignVision(s_Swerve, vision, "leftCone"));
 
         new JoystickButton(driver, XboxController.Button.kA.value)
-        .onTrue(new AlignVision(s_Swerve, vision, "midCube"));
+        .whileTrue(new AlignVision(s_Swerve, vision, "midCube"));
         
         new JoystickButton(driver, XboxController.Button.kB.value)
-        .onTrue(new AlignVision(s_Swerve, vision, "rightCone"));
+        .whileTrue(new AlignVision(s_Swerve, vision, "rightCone"));
     }
 
     /**
