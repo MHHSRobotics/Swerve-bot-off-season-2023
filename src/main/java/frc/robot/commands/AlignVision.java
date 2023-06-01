@@ -43,7 +43,7 @@ public class AlignVision extends CommandBase {
         horizontalPID.setTolerance(Constants.VisionConstants.alignToleranceMeters);
 
        
-        horizontalPID = new ProfiledPIDController(
+        rotationalPID = new ProfiledPIDController(
         Constants.SwerveConstants.angleKP, Constants.SwerveConstants.angleKI, Constants.SwerveConstants.angleKD,
         new Constraints(Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecond, Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared));
         rotationalPID.setTolerance(Constants.VisionConstants.alignToleranceRadians);
