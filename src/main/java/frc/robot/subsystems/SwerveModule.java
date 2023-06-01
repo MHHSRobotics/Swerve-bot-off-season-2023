@@ -20,6 +20,7 @@ import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /* Swerve Module Subsystem that controls individual modules. Created by FRC 364 and modified by FRC 5137. */
@@ -143,6 +144,7 @@ public class SwerveModule extends SubsystemBase{
         
         if(RobotBase.isReal())
         {
+            System.out.println(Rotation2d.fromDegrees(integratedAngleEncoder.getPosition()));
             return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
         }
         else 
@@ -167,10 +169,11 @@ public class SwerveModule extends SubsystemBase{
      */
     public void resetToAbsolute(){
         double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
+        System.out.println("absolute" + absolutePosition);  
         integratedAngleEncoder.setPosition(absolutePosition);
     }
 
-    private void configAngleEncoder(){        
+    private void configAngleEncoder(){      
         angleEncoder.configFactoryDefault();
         angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
     }
@@ -180,22 +183,18 @@ public class SwerveModule extends SubsystemBase{
         angleMotor.setSmartCurrentLimit(Constants.Swerve.angleContinuousCurrentLimit);
         angleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         angleMotor.setIdleMode(Constants.Swerve.angleNeutralMode);
-        angleController.setP(Constants.Swerve.angleKP);
-        angleController.setI(Constants.Swerve.angleKI);
-        angleController.setD(Constants.Swerve.angleKD);
-        angleController.setFF(Constants.Swerve.angleKF);
+        angleController.setP(Constants.Swerve.angleKP*(2*Math.PI)/360);
+        angleController.setI(Constants.Swerve.angleKI*(2*Math.PI)/360);
+        angleController.setD(Constants.Swerve.angleKD*(2*Math.PI)/360);
+        angleController.setFF(Constants.Swerve.angleKF*(2*Math.PI)/360);
         angleController.setPositionPIDWrappingEnabled(true);
-        angleController.setPositionPIDWrappingMaxInput(2 * Math.PI);
-        angleController.setPositionPIDWrappingMinInput(0);
+        angleController.setPositionPIDWrappingMaxInput(360);
+        angleController.setPositionPIDWrappingMinInput(1);
         resetToAbsolute();
         /*TODO: Check if it works */
-        /*
-         
-        angleEncoder.setPositionConversionFactor(Constants.ANGLE_ROTATIONS_TO_RADIANS);
-        angleEncoder.setVelocityConversionFactor(Constants.ANGLE_RPM_TO_RADIANS_PER_SECOND);
-        angleEncoder.setPosition(Units.degreesToRadians(getCanCoder() - angleOffset);
+        integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleRotationsToRadians);
+        integratedAngleEncoder.setVelocityConversionFactor(Constants.Swerve.angleRPMToRadiansPerSecond);
         angleMotor.burnFlash();
-        */
     }
 
     private void configDriveMotor(){        
@@ -209,14 +208,11 @@ public class SwerveModule extends SubsystemBase{
         driveController.setD(Constants.Swerve.angleKD);
         driveController.setFF(Constants.Swerve.angleKF);
         driveEncoder.setPosition(0.0);
-        driveMotor.burnFlash();
         /*TODO: Check if it works */
-        /* 
-        driveEncoder.setPositionConversionFactor(Constants.DRIVE_ROTATIONS_TO_METERS);
-        driveEncoder.setVelocityConversionFactor(Constants.DRIVE_RPM_TO_METERS_PER_SECOND);
+        driveEncoder.setPositionConversionFactor(Constants.Swerve.driveRotationsToMeters);
+        driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveRPMToMetersPerSecond);
         driveEncoder.setPosition(0); 
         driveMotor.burnFlash();
-        */
     }
 
     public double getVelocity()
@@ -254,7 +250,13 @@ public class SwerveModule extends SubsystemBase{
           m_simAngleDifference = angle - lastAngle.getDegrees();
           m_simTurnAngleIncrement = m_simAngleDifference / 20.0;// 10*20ms = .2 sec move time
         }
-        
+    
+}
+
+@Override
+public void periodic()
+{
+    angleMotor.setIdleMode(IdleMode.kBrake);
 }
 @Override
   public void simulationPeriodic() {
