@@ -153,7 +153,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        swerveDrivePoseEstimator.update(getYaw(), getModulePositions());
+        swerveDrivePoseEstimator.updateWithTime(Timer.getFPGATimestamp(), getYaw(), getModulePositions());
 
         for(SwerveModule mod : swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
