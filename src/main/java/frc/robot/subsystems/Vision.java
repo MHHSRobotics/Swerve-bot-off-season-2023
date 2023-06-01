@@ -4,8 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 
 
@@ -14,10 +21,23 @@ import frc.robot.Constants;
 
 public class Vision extends SubsystemBase
 {
+    PhotonPoseEstimator arCamPoseEstimator;
+    PhotonCamera arCamera;
+    AprilTagFieldLayout aprilTagFieldLayout;
         
     public Vision()
     {
-        
+        arCamera = new PhotonCamera("AR0144");
+        try 
+        {
+          aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+          System.out.println(aprilTagFieldLayout);
+        } 
+        catch (IOException e) 
+        {
+          e.printStackTrace();
+        }
+        arCamPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, arCamera, Constants.VisionConstants.robotToARCam);
     }
 
     public Pose2d getNearestAlignPose (Pose2d currentPose, String targetType)
@@ -39,12 +59,12 @@ public class Vision extends SubsystemBase
     }
     
     
-/* 
+
     public Optional<EstimatedRobotPose> getPoseFromARCamCamera(Pose2d referencePose) 
     {
       arCamPoseEstimator.setReferencePose(referencePose);
       return arCamPoseEstimator.update();
     }
-    */
+    
     
 }

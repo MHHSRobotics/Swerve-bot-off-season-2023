@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.ctre.phoenix.unmanaged.Unmanaged;
@@ -12,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;;
 
 /* System created by FRFC 364. Modified and documented by FRC 5137 */
 public class Swerve extends SubsystemBase {
-    public SwerveDriveOdometry swerveOdometry;
+    public SwerveDrivePoseEstimator swerveDrivePoseEstimator; 
     public SwerveModule[] swerveMods;
     public AHRS gyro;
     public ADXRS450_GyroSim gyroSim;
@@ -57,7 +57,7 @@ public class Swerve extends SubsystemBase {
         Timer.delay(1.0);
         resetModulesToAbsolute();
         
-        swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
+        swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions(), new Pose2d());
         
     }
 
@@ -107,12 +107,12 @@ public class Swerve extends SubsystemBase {
     }    
 
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return swerveDrivePoseEstimator.getEstimatedPosition();
         
     }
 
     public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(getYaw(), getModulePositions(), pose);
+        swerveDrivePoseEstimator.resetPosition(getYaw(), getModulePositions(), pose);
     }
 
     public SwerveModuleState[] getModuleStates(){
@@ -145,10 +145,15 @@ public class Swerve extends SubsystemBase {
             mod.resetToAbsolute();
         }
     }
+    
+    public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds)
+    {
+    swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+    }
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getModulePositions());  
+        swerveDrivePoseEstimator.update(getYaw(), getModulePositions());
 
         for(SwerveModule mod : swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());

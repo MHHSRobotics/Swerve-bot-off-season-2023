@@ -50,14 +50,14 @@ public class FieldSim extends SubsystemBase{
   }
   /*Updates the robotpose to be used in simulation */
   private void updateRobotPoses() {
-    m_field2d.setRobotPose(m_swerveDrive.swerveOdometry.getPoseMeters());
+    m_field2d.setRobotPose(m_swerveDrive.getPose());
 
     
     for (int i = 0; i < kModuleTranslations.length; i++) {
       Translation2d updatedPositions =
               kModuleTranslations[i]
-                      .rotateBy(m_swerveDrive.swerveOdometry.getPoseMeters().getRotation())
-                      .plus(m_swerveDrive.swerveOdometry.getPoseMeters().getTranslation());
+                      .rotateBy(m_swerveDrive.getPose().getRotation())
+                      .plus(m_swerveDrive.getPose().getTranslation());
       m_swerveModulePoses[i] =
               new Pose2d(
                       updatedPositions,
