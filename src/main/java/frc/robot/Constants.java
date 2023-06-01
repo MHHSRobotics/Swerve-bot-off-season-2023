@@ -1,6 +1,10 @@
 package frc.robot;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.revrobotics.CANSparkMax.IdleMode;
+
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,16 +16,19 @@ import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final double alignToleranceMeters = 0.1;
+    public static final double alignToleranceDegrees = 1;
+
 
     public static final class Swerve {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
-        public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
+        public static final COTSFalconSwerveConstants chosenModule =  
             COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
-        public static final double wheelBase = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(24.75);
+        public static final double wheelBase = Units.inchesToMeters(24.75); 
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /* Swerve Kinematics 
@@ -66,14 +73,14 @@ public final class Constants {
         public static final double angleKF = chosenModule.angleKF;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 1.6021; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 1.6021; 
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.02391;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-        public static final double driveKS = (0.79074 / 12); //TODO: This must be tuned to specific robot
+        public static final double driveKS = (0.79074 / 12); 
         public static final double driveKV = (.194587 / 12);
         public static final double driveKA = (0.010932 / 12);
 

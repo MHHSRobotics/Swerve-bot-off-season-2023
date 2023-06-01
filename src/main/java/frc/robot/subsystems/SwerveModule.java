@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.util.CTREModuleState;
@@ -191,7 +190,6 @@ public class SwerveModule extends SubsystemBase{
         angleController.setPositionPIDWrappingMaxInput(360);
         angleController.setPositionPIDWrappingMinInput(1);
         resetToAbsolute();
-        /*TODO: Check if it works */
         integratedAngleEncoder.setPositionConversionFactor(Constants.Swerve.angleRotationsToRadians);
         integratedAngleEncoder.setVelocityConversionFactor(Constants.Swerve.angleRPMToRadiansPerSecond);
         angleMotor.burnFlash();
@@ -208,7 +206,6 @@ public class SwerveModule extends SubsystemBase{
         driveController.setD(Constants.Swerve.angleKD);
         driveController.setFF(Constants.Swerve.angleKF);
         driveEncoder.setPosition(0.0);
-        /*TODO: Check if it works */
         driveEncoder.setPositionConversionFactor(Constants.Swerve.driveRotationsToMeters);
         driveEncoder.setVelocityConversionFactor(Constants.Swerve.driveRPMToMetersPerSecond);
         driveEncoder.setPosition(0); 
