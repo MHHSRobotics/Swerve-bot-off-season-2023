@@ -2,7 +2,7 @@ package frc.lib.util;
 
 import java.util.*;
 
-import frc.robot.Constants.Swerve.ModulePosition;
+import frc.robot.Constants.SwerveConstants.ModulePosition;
 
 
 /**

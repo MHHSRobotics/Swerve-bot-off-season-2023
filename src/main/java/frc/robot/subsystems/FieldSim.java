@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.Swerve.kModuleTranslations;
+import static frc.robot.Constants.SwerveConstants.kModuleTranslations;
 
 
 /*This subsystem we pulled from Team 4201, the Vitruvian bots.

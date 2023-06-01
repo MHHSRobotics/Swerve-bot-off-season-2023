@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -19,8 +19,9 @@ public final class Constants {
     public static final double alignToleranceMeters = 0.1;
     public static final double alignToleranceDegrees = 1;
 
-
-    public static final class Swerve {
+        
+    
+    public static final class SwerveConstants {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
         public static final COTSFalconSwerveConstants chosenModule =  
@@ -176,6 +177,47 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
             };
-    }
+
+    public static final class VisionConstants
+    {
+        public final static double pi = Math.PI;
+        public final static double nodeSpacing = Units.inchesToMeters(22);
+        public final static double scoreDistance = Units.inchesToMeters(36); 
+
+        //Red Alliance Align Spots
+        public final static Pose2d pose1Right = new Pose2d(15.513558 - scoreDistance, 1.071626 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose1Mid = new Pose2d(15.513558 - scoreDistance, 1.071626, new Rotation2d(pi));
+        public final static Pose2d pose1Left = new Pose2d(15.513558 - scoreDistance, 1.071626 + nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose2Right = new Pose2d(15.513558 - scoreDistance, 2.748026 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose2Mid = new Pose2d(15.513558 - scoreDistance, 2.748026, new Rotation2d(pi));
+        public final static Pose2d pose2Left = new Pose2d(15.513558 - scoreDistance, 2.748026 + nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose3Right = new Pose2d(15.513558 - scoreDistance,4.424426 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose3Mid = new Pose2d(15.513558 - scoreDistance,4.424426, new Rotation2d(pi));
+        public final static Pose2d pose3Left = new Pose2d(15.513558 - scoreDistance,4.424426 + nodeSpacing, new Rotation2d(pi));
+        //Loading stations
+        public final static Pose2d pose4 = new Pose2d(16.178784 - scoreDistance, 6.749796, new Rotation2d(pi));
+        public final static Pose2d pose5 = new Pose2d(0.36195 + scoreDistance, 6.749796, new Rotation2d(0));
+        //Blue Alliance align spots
+        public final static Pose2d pose6Right = new Pose2d(1.02743 + scoreDistance, 4.424426 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose6Mid = new Pose2d(1.02743 + scoreDistance, 4.424426, new Rotation2d(0));
+        public final static Pose2d pose6Left = new Pose2d(1.02743 + scoreDistance, 4.424426 - nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose7Right = new Pose2d(1.02743 + scoreDistance, 2.748026 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose7Mid = new Pose2d(1.02743 + scoreDistance, 2.748026, new Rotation2d(0));
+        public final static Pose2d pose7Left = new Pose2d(1.02743 + scoreDistance, 2.748026 - nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose8Right = new Pose2d(1.02743 + scoreDistance, 1.071626 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose8Mid = new Pose2d(1.02743 + scoreDistance, 1.071626, new Rotation2d(0));
+        public final static Pose2d pose8Left = new Pose2d(1.02743 + scoreDistance, 1.071626 - nodeSpacing, new Rotation2d(0));
+
+        public final static Pose2d[][] alignArray= 
+        {{pose1Left, pose1Mid, pose1Right},
+        {pose2Left, pose2Mid, pose2Right},
+        {pose3Left, pose3Mid, pose3Right},
+        {pose4 , pose4 , pose4 },
+        {pose5 , pose5, pose5  }, 
+        {pose6Left, pose6Mid, pose6Right},
+        {pose7Left, pose7Mid, pose7Right},
+        {pose8Left, pose8Mid, pose8Right}};
+        }
+}
   
 

@@ -35,9 +35,9 @@ public class Auto {
         swerveAutoBuilder = new SwerveAutoBuilder(
         swerveDrive::getPose, //Uses the getPose method of the swerve class to determine where the robot is
         swerveDrive::resetOdometry, //Uses the resetOdometery method to reset the relative position of the robot at the start of auto
-        Constants.Swerve.swerveKinematics, //The dimensions of our swerve drivetrain 
-        new PIDConstants(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD), //PID Values for turning and driving in Auto
-        new PIDConstants(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD),
+        Constants.SwerveConstants.swerveKinematics, //The dimensions of our swerve drivetrain 
+        new PIDConstants(Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD), //PID Values for turning and driving in Auto
+        new PIDConstants(Constants.SwerveConstants.angleKP, Constants.SwerveConstants.angleKI, Constants.SwerveConstants.angleKD),
         swerveDrive::setModuleStates, //What the auto builder uses to physically control the robot 
         new HashMap<>(), //A hashmap that contains both a String value and a Command value so a specific command will execute when a string has been placed in a Pathplanner marker
         true, //Mirrors the path based on alliance color 

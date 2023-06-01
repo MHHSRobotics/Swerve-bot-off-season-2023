@@ -20,14 +20,16 @@ public class AlignVision extends CommandBase {
     private PIDController forwardPID;
     private PIDController horizontalPID;
     private PIDController rotationalPID;
+    private String scoreType;
 
     public AlignVision(Swerve swerve, Vision vision, String scoreType)
     {    
         this.swerve = swerve;
         this.vision = vision;
-        forwardPID = new PIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
-        horizontalPID = new PIDController(Constants.Swerve.driveKP, Constants.Swerve.driveKI, Constants.Swerve.driveKD);
-        rotationalPID = new PIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI, Constants.Swerve.angleKD);
+        this.scoreType = scoreType;
+        forwardPID = new PIDController(Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD);
+        horizontalPID = new PIDController(Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD);
+        rotationalPID = new PIDController(Constants.SwerveConstants.angleKP, Constants.SwerveConstants.angleKI, Constants.SwerveConstants.angleKD);
         addRequirements(swerve);   
     }
 
@@ -35,7 +37,7 @@ public class AlignVision extends CommandBase {
     public void initialize()
     {
         robotPose = swerve.getPose();
-        targetPose = vision.getNearestAprilTagPose(robotPose);
+        targetPose = vision.getNearestAlignPose(robotPose, scoreType);
     }
     @Override
     public void execute() {

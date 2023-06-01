@@ -1,44 +1,50 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
+
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
+
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Vision extends SubsystemBase
 {
-    private AprilTagFieldLayout aprilTagFieldLayout; 
-    private List<Pose2d> aprilTagPoses;
-    private double scoringDistance = Units.inchesToMeters(36); 
+        
     public Vision()
     {
-        /* Try and Catch to Load the Field from a file */
-        try 
-        {
-            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
-
-        /* Fills the List with Pose2d of the AprilTags */
-        for(int i = 1; i <= aprilTagFieldLayout.getTags().size(); i++)
-        {
-            aprilTagPoses.add(aprilTagFieldLayout.getTagPose(i).get().toPose2d().transformBy(new Transform2d(new Translation2d(0, scoringDistance), new Rotation2d(Math.PI))));
-            
-        }
+        
     }
 
-    public Pose2d getNearestAprilTagPose(Pose2d currentPose)
+    public Pose2d getNearestAlignPose (Pose2d currentPose, String targetType)
     {
-        return currentPose.nearest(aprilTagPoses);
+        //Determines wether the nearest left cone, mid cube, or right cone will be returned
+        int searchRow = 0;
+        switch(targetType)
+        {
+        case "leftCone":
+            searchRow = 0;
+        case "midCube":
+            searchRow = 1;
+        case "rightCone":
+            searchRow = 2;
+        }
+
+        List<Pose2d> poseList = new ArrayList<>(Arrays.asList(Constants.VisionConstants.alignArray[searchRow]));
+        return currentPose.nearest(poseList);
     }
+    
+    
+/* 
+    public Optional<EstimatedRobotPose> getPoseFromARCamCamera(Pose2d referencePose) 
+    {
+      arCamPoseEstimator.setReferencePose(referencePose);
+      return arCamPoseEstimator.update();
+    }
+    */
+    
 }
