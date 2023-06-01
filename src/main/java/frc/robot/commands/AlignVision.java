@@ -3,9 +3,12 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Vision;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class AlignVision extends CommandBase {    
@@ -16,9 +19,11 @@ public class AlignVision extends CommandBase {
     private double forwardSpeed;
     private double horizontalSpeed;
     private double rotationalSpeed; 
-    private PIDController forwardPID;
-    private PIDController horizontalPID;
-    private PIDController rotationalPID;
+    //private PIDController forwardPID;
+    private ProfiledPIDController forwardPID;
+    private ProfiledPIDController horizontalPID;
+    private ProfiledPIDController rotationalPID;
+   
     private String scoreType;
 
     public AlignVision(Swerve swerve, Vision vision, String scoreType)
@@ -26,10 +31,23 @@ public class AlignVision extends CommandBase {
         this.swerve = swerve;
         this.vision = vision;
         this.scoreType = scoreType;
-        forwardPID = new PIDController(Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD);
-        horizontalPID = new PIDController(Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD);
-        rotationalPID = new PIDController(Constants.SwerveConstants.angleKP, Constants.SwerveConstants.angleKI, Constants.SwerveConstants.angleKD);
-        addRequirements(swerve);   
+        
+        forwardPID = new ProfiledPIDController(
+        Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD,
+        new Constraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+        forwardPID.setTolerance(Constants.VisionConstants.alignToleranceMeters);
+        
+        horizontalPID = new ProfiledPIDController(
+        Constants.SwerveConstants.driveKP, Constants.SwerveConstants.driveKI, Constants.SwerveConstants.driveKD,
+        new Constraints(Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared));
+        horizontalPID.setTolerance(Constants.VisionConstants.alignToleranceMeters);
+
+       
+        horizontalPID = new ProfiledPIDController(
+        Constants.SwerveConstants.angleKP, Constants.SwerveConstants.angleKI, Constants.SwerveConstants.angleKD,
+        new Constraints(Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecond, Constants.AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared));
+        rotationalPID.setTolerance(Constants.VisionConstants.alignToleranceRadians);
+
     }
 
     @Override

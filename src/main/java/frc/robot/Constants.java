@@ -166,9 +166,9 @@ public final class Constants {
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
-        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxSpeedMetersPerSecond = SwerveConstants.maxSpeed;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecond = SwerveConstants.maxAngularVelocity;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
         public static final double kPXController = 1;
@@ -184,6 +184,10 @@ public final class Constants {
 
     public static final class VisionConstants
     {
+
+        public static final double alignToleranceMeters = Units.inchesToMeters(1);
+        public static final double alignToleranceRadians = Units.degreesToRadians(1);
+
         public final static Transform3d robotToARCam = new Transform3d(new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)), new Rotation3d(0,0,0));
 
         public final static double pi = Math.PI;
