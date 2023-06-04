@@ -18,8 +18,9 @@ public class AddVisionMeasurement extends CommandBase {
 
   public AddVisionMeasurement(Swerve swerve, Vision vision) {
     this.vision = vision;
-    this.vision = vision;
-  }
+    this.swerve = swerve;
+    addRequirements(vision);
+    }
 
   @Override
   public void initialize() {

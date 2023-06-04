@@ -143,7 +143,6 @@ public class SwerveModule extends SubsystemBase{
         
         if(RobotBase.isReal())
         {
-            System.out.println(Rotation2d.fromDegrees(integratedAngleEncoder.getPosition()));
             return Rotation2d.fromDegrees(integratedAngleEncoder.getPosition());
         }
         else 

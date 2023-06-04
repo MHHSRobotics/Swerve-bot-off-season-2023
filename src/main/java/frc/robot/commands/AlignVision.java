@@ -58,6 +58,7 @@ public class AlignVision extends CommandBase {
     }
     @Override
     public void execute() {
+        System.out.println(targetPose);
         robotPose = swerve.getPose();
         forwardSpeed = forwardPID.calculate(robotPose.getX(), targetPose.getX());
         horizontalSpeed = horizontalPID.calculate(robotPose.getY(), targetPose.getY());
@@ -65,8 +66,8 @@ public class AlignVision extends CommandBase {
         
         /* Drive */
         swerve.drive(
-            new Translation2d(forwardSpeed, horizontalSpeed), 
-            rotationalSpeed, 
+            new Translation2d(-horizontalSpeed, -forwardSpeed), 
+            -rotationalSpeed, 
             true, 
             false
         );
@@ -75,7 +76,7 @@ public class AlignVision extends CommandBase {
     @Override 
     public boolean isFinished()
     {
-        if(horizontalSpeed == 0 || forwardSpeed == 0 || rotationalSpeed == 0)
+        if(horizontalSpeed == 0 && forwardSpeed == 0 && rotationalSpeed == 0)
         {
             return true;
         }

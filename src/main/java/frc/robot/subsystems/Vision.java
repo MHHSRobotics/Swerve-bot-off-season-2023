@@ -27,7 +27,7 @@ public class Vision extends SubsystemBase
         
     public Vision()
     {
-        arCamera = new PhotonCamera("AR0144");
+        arCamera = new PhotonCamera("AR1");
         try 
         {
           aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
