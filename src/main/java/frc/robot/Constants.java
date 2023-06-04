@@ -1,27 +1,39 @@
 package frc.robot;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
+
 public final class Constants {
     public static final double stickDeadband = 0.1;
+    public static final double alignToleranceMeters = 0.1;
+    public static final double alignToleranceDegrees = 1;
 
-    public static final class Swerve {
+        
+    
+    public static final class SwerveConstants {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
-        public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
+        public static final COTSFalconSwerveConstants chosenModule =  
             COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
-        public static final double wheelBase = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(24.75);
+        public static final double wheelBase = Units.inchesToMeters(24.75); 
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /* Swerve Kinematics 
@@ -66,14 +78,14 @@ public final class Constants {
         public static final double angleKF = chosenModule.angleKF;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 1.6021; //TODO: This must be tuned to specific robot
+        public static final double driveKP = 1.6021; 
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.02391;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-        public static final double driveKS = (0.79074 / 12); //TODO: This must be tuned to specific robot
+        public static final double driveKS = (0.79074 / 12); 
         public static final double driveKV = (.194587 / 12);
         public static final double driveKA = (0.010932 / 12);
 
@@ -154,9 +166,9 @@ public final class Constants {
     }
 
     public static final class AutoConstants { //TODO: The below constants are used in the example auto, and must be tuned to specific robot
-        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxSpeedMetersPerSecond = SwerveConstants.maxSpeed;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-        public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
+        public static final double kMaxAngularSpeedRadiansPerSecond = SwerveConstants.maxAngularVelocity;
         public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
     
         public static final double kPXController = 1;
@@ -169,6 +181,53 @@ public final class Constants {
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
             };
-    }
+
+    public static final class VisionConstants
+    {
+
+        public static final double alignToleranceMeters = Units.inchesToMeters(1);
+        public static final double alignToleranceRadians = Units.degreesToRadians(1);
+
+        public final static Transform3d robotToARCam = new Transform3d(new Translation3d(Units.inchesToMeters(0), Units.inchesToMeters(0), Units.inchesToMeters(0)), new Rotation3d(0,0,0));
+
+        public final static double pi = Math.PI;
+        public final static double nodeSpacing = Units.inchesToMeters(22);
+        public final static double scoreDistance = Units.inchesToMeters(36); 
+
+        //Red Alliance Align Spots
+        public final static Pose2d pose1Right = new Pose2d(15.513558 - scoreDistance, 1.071626 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose1Mid = new Pose2d(15.513558 - scoreDistance, 1.071626, new Rotation2d(pi));
+        public final static Pose2d pose1Left = new Pose2d(15.513558 - scoreDistance, 1.071626 + nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose2Right = new Pose2d(15.513558 - scoreDistance, 2.748026 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose2Mid = new Pose2d(15.513558 - scoreDistance, 2.748026, new Rotation2d(pi));
+        public final static Pose2d pose2Left = new Pose2d(15.513558 - scoreDistance, 2.748026 + nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose3Right = new Pose2d(15.513558 - scoreDistance,4.424426 - nodeSpacing, new Rotation2d(pi));
+        public final static Pose2d pose3Mid = new Pose2d(15.513558 - scoreDistance,4.424426, new Rotation2d(pi));
+        public final static Pose2d pose3Left = new Pose2d(15.513558 - scoreDistance,4.424426 + nodeSpacing, new Rotation2d(pi));
+        //Loading stations
+        public final static Pose2d pose4 = new Pose2d(16.178784 - scoreDistance, 6.749796, new Rotation2d(pi));
+        public final static Pose2d pose5 = new Pose2d(0.36195 + scoreDistance, 6.749796, new Rotation2d(0));
+        //Blue Alliance align spots
+        public final static Pose2d pose6Right = new Pose2d(1.02743 + scoreDistance, 4.424426 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose6Mid = new Pose2d(1.02743 + scoreDistance, 4.424426, new Rotation2d(0));
+        public final static Pose2d pose6Left = new Pose2d(1.02743 + scoreDistance, 4.424426 - nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose7Right = new Pose2d(1.02743 + scoreDistance, 2.748026 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose7Mid = new Pose2d(1.02743 + scoreDistance, 2.748026, new Rotation2d(0));
+        public final static Pose2d pose7Left = new Pose2d(1.02743 + scoreDistance, 2.748026 - nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose8Right = new Pose2d(1.02743 + scoreDistance, 1.071626 + nodeSpacing, new Rotation2d(0));
+        public final static Pose2d pose8Mid = new Pose2d(1.02743 + scoreDistance, 1.071626, new Rotation2d(0));
+        public final static Pose2d pose8Left = new Pose2d(1.02743 + scoreDistance, 1.071626 - nodeSpacing, new Rotation2d(0));
+
+        public final static Pose2d[][] alignArray= 
+        {{pose1Left, pose1Mid, pose1Right},
+        {pose2Left, pose2Mid, pose2Right},
+        {pose3Left, pose3Mid, pose3Right},
+        {pose4 , pose4 , pose4 },
+        {pose5 , pose5, pose5  }, 
+        {pose6Left, pose6Mid, pose6Right},
+        {pose7Left, pose7Mid, pose7Right},
+        {pose8Left, pose8Mid, pose8Right}};
+        }
+}
   
 

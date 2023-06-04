@@ -32,6 +32,8 @@ public class RobotContainer {
 
     private final Auto m_auto = new Auto(s_Swerve);
 
+    private final Vision vision = new Vision(); 
+
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -39,12 +41,14 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> driver.getRawAxis(0), 
                 () -> -driver.getRawAxis(1), 
-                () -> driver.getRawAxis(4), 
+                () -> -driver.getRawAxis(0), 
+                () -> -driver.getRawAxis(4), 
                 () -> robotCentric.getAsBoolean()
-            )
-        );
+            ));
+
+        vision.setDefaultCommand(new AddVisionMeasurement(s_Swerve, vision));
+        
 
         // Configure the button bindings
         configureButtonBindings();
@@ -62,6 +66,15 @@ public class RobotContainer {
         /* Driver Buttons */
         new JoystickButton(driver, XboxController.Button.kY.value)
         .onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
+        new JoystickButton(driver, XboxController.Button.kX.value)
+        .whileTrue(new AlignVision(s_Swerve, vision, "leftCone"));
+
+        new JoystickButton(driver, XboxController.Button.kA.value)
+        .whileTrue(new AlignVision(s_Swerve, vision, "midCube"));
+        
+        new JoystickButton(driver, XboxController.Button.kB.value)
+        .whileTrue(new AlignVision(s_Swerve, vision, "rightCone"));
     }
 
     /**
