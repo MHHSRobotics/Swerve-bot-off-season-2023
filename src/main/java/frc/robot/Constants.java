@@ -219,15 +219,12 @@ public final class Constants {
         public final static Pose2d pose8Left = new Pose2d(1.02743 + scoreDistance, 1.071626 - nodeSpacing, new Rotation2d(0));
 
         public final static Pose2d[][] alignArray= 
-        {{pose1Left, pose1Mid, pose1Right},
-        {pose2Left, pose2Mid, pose2Right},
-        {pose3Left, pose3Mid, pose3Right},
-        {pose4 , pose4 , pose4 },
-        {pose5 , pose5, pose5  }, 
-        {pose6Left, pose6Mid, pose6Right},
-        {pose7Left, pose7Mid, pose7Right},
-        {pose8Left, pose8Mid, pose8Right}};
+        {{pose1Left, pose2Left, pose3Left, pose4, pose5, pose6Left, pose7Left, pose8Left},
+        {pose1Mid, pose2Mid, pose3Mid, pose4,pose5,pose6Mid,pose7Mid,pose8Mid},
+        {pose1Right,pose2Right, pose3Right,pose4, pose5, pose6Right, pose7Right, pose8Right}};
         }
+
+        
 }
   
 

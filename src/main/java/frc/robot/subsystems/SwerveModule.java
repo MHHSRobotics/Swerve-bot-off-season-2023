@@ -252,7 +252,6 @@ public class SwerveModule extends SubsystemBase{
 @Override
 public void periodic()
 {
-    angleMotor.setIdleMode(IdleMode.kBrake);
 }
 @Override
   public void simulationPeriodic() {

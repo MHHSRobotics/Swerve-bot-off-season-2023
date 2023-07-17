@@ -55,6 +55,7 @@ public class Vision extends SubsystemBase
             searchRow = 1;
         }
 
+        System.out.println("searc row" + searchRow);
         List<Pose2d> poseList = new ArrayList<>(Arrays.asList(Constants.VisionConstants.alignArray[searchRow]));
         return currentPose.nearest(poseList);
     }
