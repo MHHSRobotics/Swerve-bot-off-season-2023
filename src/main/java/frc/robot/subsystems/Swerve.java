@@ -154,6 +154,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         swerveDrivePoseEstimator.updateWithTime(Timer.getFPGATimestamp(), getYaw(), getModulePositions());
+        //TODO: Check if this stuff works fr. The timer may be throwing it off. 
 
         for(SwerveModule mod : swerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
