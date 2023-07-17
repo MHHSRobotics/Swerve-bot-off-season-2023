@@ -85,6 +85,13 @@ public class AlignVision extends CommandBase {
         
         double currentDegrees = robotPose.getRotation().getDegrees()%360; 
         double targetDegrees = (targetPose.getRotation().getDegrees()+180)%360; 
+        double degreeDiff = Math.abs(targetDegrees - currentDegrees);
+        if(degreeDiff > 180)
+        {
+            double tempDegrees = targetDegrees;
+            targetDegrees = currentDegrees;
+            currentDegrees = tempDegrees;
+        }
         rotationalSpeed = rotationalPID.calculate(
         (currentDegrees),
         (targetDegrees));
