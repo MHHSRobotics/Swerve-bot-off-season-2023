@@ -11,7 +11,7 @@ Our swerve robot uses:<br>
 - REV Spark Maxes, <br>
 - and Kauai Labs navX2. 
 <br> 
-<br>
+
 
 ## Special Thanks
 * [Team 364](https://github.com/Team364/BaseFalconSwerve) - For creating the base code for our development project. <br>
