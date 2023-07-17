@@ -118,7 +118,7 @@ public class AlignRobot extends CommandBase {
 
     /**
      * Optimizes angle so that the robot uses the shortest spin to align.
-     * @return angle of target position in degrees from -179 to 180.
+     * @return angle of target position in degrees from -179 to 360.
      */
     private double getTargetDegrees()
     {
