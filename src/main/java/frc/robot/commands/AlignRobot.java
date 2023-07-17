@@ -9,6 +9,8 @@ import java.io.Console;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  *  XBOX 'B' being the nearest right cone spot, 
  * and XBOX 'X' being the nearest left cone spot. 
  */
-public class AlignVision extends CommandBase {    
+public class AlignRobot extends CommandBase {    
     
     private Swerve swerve; 
     private Vision vision;  
@@ -39,7 +41,7 @@ public class AlignVision extends CommandBase {
    
     private String scoreType;
 
-    public AlignVision(Swerve swerve, Vision vision, String scoreType)
+    public AlignRobot(Swerve swerve, Vision vision, String scoreType)
     {    
         this.swerve = swerve;
         this.vision = vision;
@@ -59,7 +61,6 @@ public class AlignVision extends CommandBase {
 
     /**
      * The method that is called at the start of the command. 
-     * 
      * Decides on target position based upon current position, when triggered,  and controller input. 
      */
     @Override
@@ -71,53 +72,61 @@ public class AlignVision extends CommandBase {
 
     /**
      * Method called continously until command is finished. 
-     * 
      * Calculates speed in forward, horizontal, and rotational directions. 
      * Causes robot to eventually align in given position based upon the determined RobotPose. 
      */
     @Override
     public void execute() {
-        /* Gets position of robot */
+        /* Updates position of robot */
         robotPose = swerve.getPose();
         /*Calculates speeds to reach the align position */
         forwardSpeed = forwardPID.calculate(robotPose.getX(), targetPose.getX());
         horizontalSpeed = horizontalPID.calculate(robotPose.getY(), targetPose.getY());
-        
-        double currentDegrees = robotPose.getRotation().getDegrees()%360; 
-        double targetDegrees = (targetPose.getRotation().getDegrees()+180)%360; 
-        double degreeDiff = Math.abs(targetDegrees - currentDegrees);
-        if(degreeDiff > 180)
-        {
-            double tempDegrees = targetDegrees;
-            targetDegrees = currentDegrees;
-            currentDegrees = tempDegrees;
-        }
-        rotationalSpeed = rotationalPID.calculate(
-        (currentDegrees),
-        (targetDegrees));
-       
-        if(Math.abs(((targetPose.getRotation().getDegrees()+180)%360)-(robotPose.getRotation().getDegrees()%360)) > 180 && rotationalSpeed > 0)
-       {
-        rotationalSpeed *= -1;
-       }
+        rotationalSpeed = rotationalPID.calculate(getCurrentDegrees(),getTargetDegrees());
         /* Inputs speed into drivetrain */
         swerve.drive(
             new Translation2d(-forwardSpeed, -horizontalSpeed), 
             rotationalSpeed, 
             true, 
             true
-            
         );
         
     }
 
+    /**
+     * Method called to check if command is finished.
+     * Returns true if PID speeds are all 0. 
+     */
     @Override 
     public boolean isFinished()
     {
-        if(Math.abs(horizontalSpeed) == 0 && Math.abs(forwardSpeed) == 0 && Math.abs(rotationalSpeed) == 0 )
+        if(horizontalSpeed == 0 && forwardSpeed == 0 && rotationalSpeed == 0)
         {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Optimizes angle so robot does not over-rotate. 
+     * @return robot position in degrees from 0-359.
+     */
+    private double getCurrentDegrees()
+    {
+        return robotPose.getRotation().getDegrees()%360;
+    }
+
+    /**
+     * Optimizes angle so that the robot uses the shortest spin to align.
+     * @return angle of target position in degrees from -179 to 180.
+     */
+    private double getTargetDegrees()
+    {
+        double targetDegrees = (targetPose.getRotation().getDegrees()+180)%360;
+        if(Math.abs(targetDegrees-getCurrentDegrees())>180) 
+        {
+            return targetDegrees-=360; //If robot is spinning the "long way around" (>180*), correct target degrees to minimize excess.
+        }
+        return targetDegrees;
     }
 }
