@@ -23,7 +23,9 @@ public final class Constants {
     public static final double alignToleranceMeters = 0.1;
     public static final double alignToleranceDegrees = 1;
 
+    public static final class ElevatorConstants {
         
+    }
     
     public static final class SwerveConstants {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
