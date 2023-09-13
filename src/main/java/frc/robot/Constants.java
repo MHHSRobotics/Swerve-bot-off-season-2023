@@ -24,7 +24,14 @@ public final class Constants {
     public static final double alignToleranceDegrees = 1;
 
     public static final class ElevatorConstants {
-        
+        public static final int motorPort = 1;
+
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double maxVelo = 5.0;
+        public static final double maxAccel = 1.0;
     }
     
     public static final class SwerveConstants {
