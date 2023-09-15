@@ -20,7 +20,8 @@ import frc.robot.Subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
-
+    private final Joystick assist = new Joystick(1);
+    //private final Joystick troll = new Joystick(2);
 
     /* Driver Buttons */
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
@@ -34,7 +35,11 @@ public class RobotContainer {
 
     private final Vision vision = new Vision(); 
 
+    private final Elevator elevator_Subsystem = new Elevator();
 
+    /* Commands */
+
+    private final Elevator_Commands elevator = new Elevator_Commands(elevator_Subsystem);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -56,12 +61,6 @@ public class RobotContainer {
 
     }
 
-    /**
-     * Use this method to define your button->command mappings. Buttons can be created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
     private void configureButtonBindings() {
         /* Driver Buttons */
         new JoystickButton(driver, XboxController.Button.kY.value)
@@ -75,6 +74,20 @@ public class RobotContainer {
         
         new JoystickButton(driver, XboxController.Button.kB.value)
         .whileTrue(new AlignVision(s_Swerve, vision, "rightCone"));
+
+        /* Operator Buttons */
+
+        new JoystickButton(assist, XboxController.Button.kY.value)
+        .onTrue(elevator.setPosition(0));
+
+        new JoystickButton(assist, XboxController.Button.kX.value)
+        .onTrue(elevator.setPosition(1));
+
+        new JoystickButton(assist, XboxController.Button.kA.value)
+        .onTrue(elevator.setPosition(2));
+
+        new JoystickButton(assist, XboxController.Button.kB.value)
+        .onTrue(elevator.setPosition(3));
     }
 
     /**
