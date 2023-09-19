@@ -11,8 +11,10 @@
           "open": true
         }
       },
-      "window": {
-        "visible": false
+      "SPARK MAX [9]": {
+        "header": {
+          "open": true
+        }
       }
     },
     "Timing": {

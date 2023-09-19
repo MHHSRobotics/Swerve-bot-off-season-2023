@@ -2,18 +2,17 @@ package frc.robot.Subsystems;
 
 import frc.robot.Constants;
 
-import java.sql.Driver;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Elevator extends SubsystemBase {
-    private Joystick driver;
-    private static Spark motor;
+    private Joystick controller;
+    private static CANSparkMax motor;
     private static Encoder encoder;
     private static PIDController PID;
     private static TrapezoidProfile TP;
@@ -22,9 +21,9 @@ public class Elevator extends SubsystemBase {
     private static double position;
     private static double kV;
 
-    public Elevator(Joystick driver) {
-        this.driver = driver;
-        motor = new Spark(Constants.ElevatorConstants.motorPort);
+    public Elevator(Joystick controller) {
+        this.controller = controller;
+        motor = new CANSparkMax(Constants.ElevatorConstants.motorPort, MotorType.kBrushed);
         encoder = new Encoder(0, 1);
         PID = new PIDController(0, 0, 0);
         TP_Constraints = new TrapezoidProfile.Constraints(Constants.ElevatorConstants.maxVelo, Constants.ElevatorConstants.maxAccel);
@@ -32,13 +31,17 @@ public class Elevator extends SubsystemBase {
 
     public void periodic() {
         position = encoder.getDistance();
-        if (Math.abs(driver.getRawAxis(1)) > 0.2) {
-            kV = driver.getRawAxis(1);
-        } else { 
+        if (Math.abs(controller.getRawAxis(1)) > 0.2) {
+            kV = -controller.getRawAxis(1);
+            goal = position;
+        } else {
+            kV = 0.0;
             //var target = TP.calculate(0.02);
             //kV = PID.calculate(position, goal);
         }
         motor.setVoltage(kV);
+        System.out.println("Position: "+position);
+        System.out.println("Goal: "+goal);
     }
 
     public void set(double x) {
