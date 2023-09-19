@@ -35,7 +35,7 @@ public class RobotContainer {
 
     private final Vision vision = new Vision(); 
 
-    private final Elevator elevator_Subsystem = new Elevator();
+    private final Elevator elevator_Subsystem = new Elevator(driver);
 
     /* Commands */
 
