@@ -34,18 +34,16 @@ public class Elevator extends SubsystemBase {
         position = encoder.getDistance();
         if (Math.abs(driver.getRawAxis(1)) > 0.2) {
             kV = driver.getRawAxis(1);
-        } else {
-            /* 
-            var target = TP.calculate(0.02);
-            kV = PID.calculate(position, target.position);
-            */
+        } else { 
+            //var target = TP.calculate(0.02);
+            //kV = PID.calculate(position, goal);
         }
         motor.setVoltage(kV);
     }
 
     public void set(double x) {
         goal = x;
-        TP = new TrapezoidProfile(TP_Constraints, new TrapezoidProfile.State(goal, 0.0), new TrapezoidProfile.State(position, kV));
+        //TP = new TrapezoidProfile(TP_Constraints, new TrapezoidProfile.State(goal, 0.0), new TrapezoidProfile.State(position, kV));
     }
 
     public double get() {
