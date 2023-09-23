@@ -27,6 +27,9 @@ public final class Constants {
         public static final int motor1Port = 9;
         public static final int motor2Port = 10;
 
+        public static final int upperLimitPort = 1;
+        public static final int lowerLimitPort = 0;
+
         public static final double kP = 1.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;

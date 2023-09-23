@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.Joystick;
@@ -14,12 +15,18 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class Elevator extends SubsystemBase {
     private Joystick controller;
+
     private static WPI_TalonSRX motor1;
     private static WPI_TalonSRX motor2;
+
+    private static DigitalInput lowerLimitSwitch;
+    private static DigitalInput upperLimitSwitch;
+
     private static Encoder encoder;
     private static PIDController PID;
     private static TrapezoidProfile TP;
     private static TrapezoidProfile.Constraints TP_Constraints;
+
     private static double goal;
     private static double position;
     private static double kV;
@@ -28,8 +35,12 @@ public class Elevator extends SubsystemBase {
 
     public Elevator(Joystick controller) {
         this.controller = controller;
+
         motor1 = new WPI_TalonSRX(Constants.ElevatorConstants.motor1Port);
         motor2 = new WPI_TalonSRX(Constants.ElevatorConstants.motor2Port);
+
+        lowerLimitSwitch = new DigitalInput(Constants.ElevatorConstants.lowerLimitPort);
+        upperLimitSwitch = new DigitalInput(Constants.ElevatorConstants.upperLimitPort);
 
         motor1.configFactoryDefault();
         motor2.configFactoryDefault();
@@ -51,21 +62,31 @@ public class Elevator extends SubsystemBase {
         t += 0.02;
         //position = encoder.getDistance();
         position += kV*0.02; //Simulated encoder
-        if (Math.abs(controller.getRawAxis(1)) > 0.2) {
-            kV = -controller.getRawAxis(1);
-            goal = position;
-            motor1.set(kV);
-            motor2.set(kV);
-            profilingActive = false;
+        if (upperLimitSwitch.get()) {
+            motor1.set(0.1);
+            motor2.set(0.1);
+            kV = 0.1;
+        } else if (lowerLimitSwitch.get()) {
+            motor1.set(-0.1);
+            motor2.set(-0.1);
+            kV = -0.1;
         } else {
-            if (profilingActive) {
-                var target = TP.calculate(t);
-                kV = PID.calculate(position, target.position);
+            if (Math.abs(controller.getRawAxis(1)) > 0.2) {
+                kV = -controller.getRawAxis(1);
+                goal = position;
+                motor1.set(kV);
+                motor2.set(kV);
+                profilingActive = false;
             } else {
-                kV = PID.calculate(position, goal);
+                if (profilingActive) {
+                    var target = TP.calculate(t);
+                    kV = PID.calculate(position, target.position);
+                } else {
+                    kV = PID.calculate(position, goal);
+                }
+                motor1.setVoltage(kV);
+                motor1.setVoltage(kV);
             }
-            motor1.setVoltage(kV);
-            motor1.setVoltage(kV);
         }
         System.out.println("Velocity: "+kV);
         System.out.println("Position: "+position);
