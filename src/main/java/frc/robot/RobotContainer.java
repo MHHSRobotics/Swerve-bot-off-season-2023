@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+//import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -46,9 +47,9 @@ public class RobotContainer {
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> -driver.getRawAxis(1), 
-                () -> -driver.getRawAxis(0), 
-                () -> -driver.getRawAxis(4), 
+                () -> -driver.getRawAxis(1),
+                () -> -driver.getRawAxis(0),
+                () -> -driver.getRawAxis(4), // CHANGE TO 2 FOR PS4
                 () -> robotCentric.getAsBoolean()
             ));
 
@@ -77,16 +78,16 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        new JoystickButton(assist, XboxController.Button.kY.value)
+        new JoystickButton(assist, XboxController.Button.kB.value)
         .onTrue(elevator.setPosition(0));
 
-        new JoystickButton(assist, XboxController.Button.kX.value)
+        new JoystickButton(assist, XboxController.Button.kA.value)
         .onTrue(elevator.setPosition(1));
 
-        new JoystickButton(assist, XboxController.Button.kA.value)
+        new JoystickButton(assist, XboxController.Button.kX.value)
         .onTrue(elevator.setPosition(2));
 
-        new JoystickButton(assist, XboxController.Button.kB.value)
+        new JoystickButton(assist, XboxController.Button.kY.value)
         .onTrue(elevator.setPosition(3));
     }
 
