@@ -37,6 +37,10 @@ public final class Constants {
         public static final double maxVelo = 1.0;
         public static final double maxAccel = 1.0;
     }
+
+    public static final class IntakeConstants {
+        public static final int intakePort = 0;
+    }
     
     public static final class SwerveConstants {
         public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-

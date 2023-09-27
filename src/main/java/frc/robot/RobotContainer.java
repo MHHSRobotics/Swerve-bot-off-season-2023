@@ -36,11 +36,15 @@ public class RobotContainer {
 
     private final Vision vision = new Vision(); 
 
-    private final Elevator elevator_Subsystem = new Elevator(assist);
+    private final Elevator elevator = new Elevator(assist);
+
+    private final Intake intake = new Intake();
 
     /* Commands */
 
-    private final Elevator_Commands elevator = new Elevator_Commands(elevator_Subsystem);
+    private final Elevator_Commands elevator_Commands = new Elevator_Commands(elevator);
+
+    private final Intake_Commands intake_Commands = new Intake_Commands(intake);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -79,16 +83,18 @@ public class RobotContainer {
         /* Operator Buttons */
 
         new JoystickButton(assist, XboxController.Button.kB.value)
-        .onTrue(elevator.setPosition(0));
+        .onTrue(elevator_Commands.setPosition(0));
 
         new JoystickButton(assist, XboxController.Button.kA.value)
-        .onTrue(elevator.setPosition(1));
+        .onTrue(elevator_Commands.setPosition(1));
 
         new JoystickButton(assist, XboxController.Button.kX.value)
-        .onTrue(elevator.setPosition(2));
+        .onTrue(elevator_Commands.setPosition(2));
 
         new JoystickButton(assist, XboxController.Button.kY.value)
-        .onTrue(elevator.setPosition(3));
+        .onTrue(elevator_Commands.setPosition(3));
+
+        //Create button binding for intake here.
     }
 
     /**

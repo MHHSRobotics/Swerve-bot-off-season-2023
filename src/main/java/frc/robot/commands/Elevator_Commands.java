@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Subsystems.Elevator;
 
@@ -12,6 +11,6 @@ public class Elevator_Commands {
     }
 
    public Command setPosition(double pos) {
-    return new InstantCommand(() -> elevator.set(pos));
+        return new InstantCommand(() -> elevator.set(pos));
    } 
 }
