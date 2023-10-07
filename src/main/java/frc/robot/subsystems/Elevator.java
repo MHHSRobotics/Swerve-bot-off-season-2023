@@ -1,12 +1,10 @@
 package frc.robot.Subsystems;
 
 import frc.robot.Constants;
-import frc.robot.Robot;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -48,9 +46,7 @@ public class Elevator extends SubsystemBase {
         motor1.setNeutralMode(NeutralMode.Brake);
         motor2.setNeutralMode(NeutralMode.Brake);
 
-        //Everything below needs to be tested separately after initial test (comment it out and everything related to it)
-
-        encoder = new Encoder(0, 1);
+        //encoder = new Encoder(0, 1);
         t = 0.0;
         profilingActive = false;
 
@@ -62,14 +58,14 @@ public class Elevator extends SubsystemBase {
         t += 0.02;
         //position = encoder.getDistance();
         position += kV*0.02; //Simulated encoder
-        if (upperLimitSwitch.get()) {
-            motor1.set(0.1);
-            motor2.set(0.1);
-            kV = 0.1;
-        } else if (lowerLimitSwitch.get()) {
-            motor1.set(-0.1);
-            motor2.set(-0.1);
-            kV = -0.1;
+        if (!upperLimitSwitch.get()) {
+            motor1.set(0);
+            motor2.set(0);
+            kV = 0;
+        } else if (!lowerLimitSwitch.get()) {
+            motor1.set(0);
+            motor2.set(0);
+            kV = 0;
         } else {
             if (Math.abs(controller.getRawAxis(1)) > 0.2) {
                 kV = -controller.getRawAxis(1);
@@ -84,13 +80,14 @@ public class Elevator extends SubsystemBase {
                 } else {
                     kV = PID.calculate(position, goal);
                 }
+                if (kV < 0.01) {
+                    kV = 0;
+                }
                 motor1.setVoltage(kV);
                 motor1.setVoltage(kV);
             }
         }
-        System.out.println("Velocity: "+kV);
-        System.out.println("Position: "+position);
-        System.out.println("Goal: "+goal);
+        System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
     }
 
     public void set(double x) {
