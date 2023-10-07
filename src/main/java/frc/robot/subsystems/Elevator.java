@@ -93,10 +93,11 @@ public class Elevator extends SubsystemBase {
         System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
     }
 
+    // Switch to actual limit switches
     private boolean checkLimitSwitches() {
-        if (controller.getRawButton(5) && kV > 0.0) {
+        if (controller.getRawButton(5) && kV < 0.0) { // Lower
             return false;
-        } else if (controller.getRawButton(6) && kV < 0.0) {
+        } else if (controller.getRawButton(6) && kV > 0.0) { // Upper
             return false;
         } else {
             return true;
