@@ -58,36 +58,49 @@ public class Elevator extends SubsystemBase {
         t += 0.02;
         //position = encoder.getDistance();
         position += kV*0.02; //Simulated encoder
-        if (!upperLimitSwitch.get()) {
-            motor1.set(0);
-            motor2.set(0);
-            kV = 0;
-        } else if (!lowerLimitSwitch.get()) {
-            motor1.set(0);
-            motor2.set(0);
-            kV = 0;
-        } else {
-            if (Math.abs(controller.getRawAxis(1)) > 0.2) {
-                kV = -controller.getRawAxis(1);
-                goal = position;
+        if (Math.abs(controller.getRawAxis(1)) > 0.1) {
+            kV = -controller.getRawAxis(1);
+            goal = position;
+            if (checkLimitSwitches()) {
                 motor1.set(kV);
                 motor2.set(kV);
-                profilingActive = false;
             } else {
-                if (profilingActive) {
-                    var target = TP.calculate(t);
-                    kV = PID.calculate(position, target.position);
-                } else {
-                    kV = PID.calculate(position, goal);
-                }
-                if (kV < 0.01) {
-                    kV = 0;
-                }
+                motor1.set(0.0);
+                motor2.set(0.0);
+                kV = 0.0;
+            }
+            profilingActive = false;
+        } else {
+            if (profilingActive) {
+                var target = TP.calculate(t);
+                kV = PID.calculate(position, target.position);
+            } else {
+                kV = PID.calculate(position, goal);
+            }
+            if (kV < 0.01) {
+                kV = 0;
+            }
+            
+            if (checkLimitSwitches()) {
                 motor1.setVoltage(kV);
-                motor1.setVoltage(kV);
+                motor2.setVoltage(kV);
+            } else {
+                motor1.set(0.0);
+                motor2.set(0.0);
+                kV = 0.0;
             }
         }
         System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
+    }
+
+    private boolean checkLimitSwitches() {
+        if (controller.getRawButton(5) && kV > 0.0) {
+            return false;
+        } else if (controller.getRawButton(6) && kV < 0.0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void set(double x) {
