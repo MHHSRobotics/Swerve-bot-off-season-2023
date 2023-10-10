@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.PS4Controller;
@@ -7,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Autos.*;
 import frc.robot.Commands.*;
 import frc.robot.Subsystems.*;
@@ -93,7 +96,33 @@ public class RobotContainer {
         new JoystickButton(assist, XboxController.Button.kY.value)
         .onTrue(elevator_Commands.setPosition(3));
 
+        new Trigger(createBooleanSupplier(assist, 3, 2))
+        .onTrue(intake_Commands.runIntake())
+        .onFalse(intake_Commands.stopIntake());
+
+        new Trigger(createBooleanSupplier(assist, 2, 3))
+        .onTrue(intake_Commands.reverseIntake())
+        .onFalse(intake_Commands.stopIntake());
+
         //Create button binding for intake here.
+    }
+
+    //required port is the joystick you are currecntly attempting to use 
+    //dependent port is the joytick we're checking against, to make sure you're not breaking the robot 
+    private BooleanSupplier createBooleanSupplier(Joystick controller, int requiredPort, int dependentPort) {
+        BooleanSupplier supply;
+        supply = () -> {
+        if (controller != null) {
+            if (controller.getRawAxis(requiredPort) > 0.1 && controller.getRawAxis(dependentPort) < 0.1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        };
+        return supply;
     }
 
     /**

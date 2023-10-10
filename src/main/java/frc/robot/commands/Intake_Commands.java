@@ -11,10 +11,14 @@ public class Intake_Commands {
     }
 
    public Command runIntake() {
-        return new InstantCommand(() -> {/* Put instructions here */});
+        return new InstantCommand(() -> intake.intake(true));
+   }
+
+   public Command reverseIntake() {
+        return new InstantCommand(() -> intake.intake(false));
    }
 
    public Command stopIntake() {
-        return new InstantCommand(() -> {/* Put instructions here */});
+        return new InstantCommand(() -> intake.stop());
     }
 }

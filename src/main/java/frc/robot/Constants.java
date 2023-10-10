@@ -34,6 +34,7 @@ public final class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
+        public static final double maxSpeed = 0.5;
         public static final double maxVelo = 1.0;
         public static final double maxAccel = 1.0;
     }

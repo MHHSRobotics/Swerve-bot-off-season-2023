@@ -1,28 +1,31 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-    //Create motor here
+    private static CANSparkMax motor;
 
     public Intake() {
-        //Create motor here
+        motor = new CANSparkMax(Constants.IntakeConstants.intakePort, MotorType.kBrushless);
     }
 
-    public void intake() {
-        //Add code to run the motor when this method is called.
+    public void intake(boolean dir) {
+        if (dir) {
+            motor.set(1.0);
+        } else {
+            motor.set(-1.0);
+        }
     }
 
     public void stop() {
-        //Add code to stop the motor when this method is called.
+        motor.set(0.0);
     }
 
-    public boolean get() {
-        //Add code here to return whether the intake is running or not.
-        return false;
+    public double get() {
+        return motor.get();
     }
 }
