@@ -61,27 +61,27 @@ public class Elevator extends SubsystemBase {
 
     public void periodic() {
         //position = encoder.getDistance();
-        if (Math.abs(controller.getRawAxis(1)) > 0.1) {
+        if (Math.abs(controller.getRawAxis(1)) > Constants.stickDeadband) {
             kV = -controller.getRawAxis(1);
             //goal = position;
             if (checkLimitSwitches()) {
-                motor1.set(max(kV));
-                motor2.set(max(kV));
+                motor1.set(cap(kV));
+                motor2.set(cap(kV));
             } else {
                 motor1.set(0.0);
                 motor2.set(0.0);
                 kV = 0.0;
             }
             //profilingActive = false;
-        } /*else {
-            if (profilingActive) {
+        } else {
+            /*if (profilingActive) {
                 var target = TP.calculate(t);
                 kV = PID.calculate(position, target.position);
             } else {
                 kV = PID.calculate(position, goal);
             }
             if (kV < 0.01) {
-                kV = 0;
+                kV = 0.0;
             }
             
             if (checkLimitSwitches()) {
@@ -91,13 +91,21 @@ public class Elevator extends SubsystemBase {
                 motor1.set(0.0);
                 motor2.set(0.0);
                 kV = 0.0;
-            }
-        }*/
+            }*/
+            kV = 0.0;
+            motor1.set(0.0);
+            motor2.set(0.0);
+        }
         //System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
+        System.out.println("Elevator Speed: "+kV);
     }
 
-    private double max(double x) {
-        return Math.max(x, ElevatorConstants.maxSpeed);
+    private double cap(double x) {
+        if (x > 0) {
+            return Math.min(x, ElevatorConstants.maxSpeed);
+        } else {
+            return Math.max(x, -ElevatorConstants.maxSpeed);
+        }
     }
 
     // Switch to actual limit switches
