@@ -40,7 +40,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants {
-        public static final int intakePort = 0;
+        public static final int intakePort = 15;
     }
     
     public static final class SwerveConstants {
