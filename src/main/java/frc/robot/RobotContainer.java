@@ -44,6 +44,8 @@ public class RobotContainer {
 
     /* Commands */
 
+    private final Swerve_Commands swerve_Commands = new Swerve_Commands(s_Swerve);
+
     private final Elevator_Commands elevator_Commands = new Elevator_Commands(elevator);
 
     private final Intake_Commands intake_Commands = new Intake_Commands(intake);
@@ -132,10 +134,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return m_auto.getAuto();
-
-
-        
+        return new BAB_Auto(swerve_Commands, elevator_Commands, intake_Commands);
     }
     
     public void periodic() {

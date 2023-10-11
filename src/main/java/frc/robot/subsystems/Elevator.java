@@ -1,10 +1,12 @@
 package frc.robot.Subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.ElevatorConstants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -92,9 +94,20 @@ public class Elevator extends SubsystemBase {
                 motor2.set(0.0);
                 kV = 0.0;
             }*/
-            kV = 0.0;
-            motor1.set(0.0);
-            motor2.set(0.0);
+            if (DriverStation.isAutonomous()) {
+                if (checkLimitSwitches()) {
+                    motor1.set(cap(kV));
+                    motor2.set(cap(kV));
+                } else {
+                    motor1.set(0.0);
+                    motor2.set(0.0);
+                    kV = 0.0;
+                }
+            } else {
+                motor1.set(0.0);
+                motor2.set(0.0);
+                kV = 0.0;
+            }
         }
         //System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
         System.out.println("Elevator Speed: "+kV);
@@ -110,20 +123,24 @@ public class Elevator extends SubsystemBase {
 
     // Switch to actual limit switches
     private boolean checkLimitSwitches() {
-        if (lowerLimitSwitch.get() && kV < 0.0) { // Lower
+        if (!lowerLimitSwitch.get() && kV < 0.0) { // Lower
             return false;
-        } else if (upperLimitSwitch.get() && kV > 0.0) { // Upper
+        } else if (!upperLimitSwitch.get() && kV > 0.0) { // Upper
             return false;
         } else {
             return true;
         }
     }
 
-    public void set(double x) {
+    public void setPos(double x) {
         /*goal = x;
         TP = new TrapezoidProfile(TP_Constraints, new TrapezoidProfile.State(goal, 0.0), new TrapezoidProfile.State(position, kV));
         t = 0.0;
         profilingActive = true;*/
+    }
+
+    public void set(double x) {
+        kV = x;
     }
 
     /*public double get() {
