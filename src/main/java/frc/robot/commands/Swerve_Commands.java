@@ -32,4 +32,19 @@ public class Swerve_Commands {
             },
             swerve);
     }
+
+    public Command autoBalance() {
+        return new FunctionalCommand(
+            () -> timer.restart(),
+            () -> swerve.balance(),
+            (Boolean finished) -> {},
+            () -> {
+                if (swerve.isBalanced()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            swerve);
+    }
 }

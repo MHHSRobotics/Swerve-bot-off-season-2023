@@ -10,7 +10,8 @@ public class BAB_Auto extends SequentialCommandGroup {
         addCommands(
             elevator.autoSetSpeed(0.5, 2),
             intake.autoIntake(false, 1),
-            swerve.autoMove(0, -1, 0, 3)
+            swerve.autoMove(1, 0, 0, 3),
+            swerve.autoBalance()
         );
     }
 }

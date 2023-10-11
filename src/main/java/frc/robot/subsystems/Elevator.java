@@ -110,7 +110,6 @@ public class Elevator extends SubsystemBase {
             }
         }
         //System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
-        System.out.println("Elevator Speed: "+kV);
     }
 
     private double cap(double x) {
