@@ -31,6 +31,7 @@ public class Swerve extends SubsystemBase {
     public AHRS gyro;
     public ADXRS450_GyroSim gyroSim;
     private double m_simYaw;
+    private Timer balanceTimer;
 
     /**
      * Swerve Substsemm that controls all modules simulataneously.
@@ -43,6 +44,7 @@ public class Swerve extends SubsystemBase {
         //gyroSim = new ADXRS450_GyroSim(gyro);
         gyro.calibrate();
         zeroGyro();
+        balanceTimer = new Timer();
 
         swerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
@@ -140,6 +142,10 @@ public class Swerve extends SubsystemBase {
         return (Constants.SwerveConstants.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
+    public Rotation2d getPitch() {
+        return Rotation2d.fromDegrees(gyro.getPitch());
+    }
+
     public void resetModulesToAbsolute(){
         for(SwerveModule mod : swerveMods){
             mod.resetToAbsolute();
@@ -149,6 +155,22 @@ public class Swerve extends SubsystemBase {
     public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds)
     {
     swerveDrivePoseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+    }
+
+    public void balance() {
+       drive(new Translation2d((getPitch().getDegrees()/180)+0.5, 0), 0.0, true, false);
+    }
+
+    public Boolean isBalanced() {
+        System.out.println(getPitch().getDegrees());
+        if (Math.abs(getPitch().getDegrees()) > 10) {
+            balanceTimer.restart();
+            return false;
+        } else if (balanceTimer.hasElapsed(1)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
