@@ -45,6 +45,8 @@ public class Elevator extends SubsystemBase {
         motor1.configFactoryDefault();
         motor2.configFactoryDefault();
 
+        motor2.setInverted(true);
+
         motor1.setNeutralMode(NeutralMode.Brake);
         motor2.setNeutralMode(NeutralMode.Brake);
 
@@ -97,7 +99,6 @@ public class Elevator extends SubsystemBase {
             motor2.set(0.0);
         }
         //System.out.println("Velocity: "+kV+" Position: "+position+" Goal: "+goal);
-        System.out.println("Elevator Speed: "+kV);
     }
 
     private double cap(double x) {
@@ -110,9 +111,11 @@ public class Elevator extends SubsystemBase {
 
     // Switch to actual limit switches
     private boolean checkLimitSwitches() {
-        if (lowerLimitSwitch.get() && kV < 0.0) { // Lower
+        if (!lowerLimitSwitch.get() && kV < 0.0) { // Lower
+            System.out.println("Lower limit reached.");
             return false;
-        } else if (upperLimitSwitch.get() && kV > 0.0) { // Upper
+        } else if (!upperLimitSwitch.get() && kV > 0.0) { // Upper
+            System.out.println("Upper limit reached.");
             return false;
         } else {
             return true;

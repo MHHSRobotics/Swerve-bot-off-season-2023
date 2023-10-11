@@ -30,11 +30,11 @@ public final class Constants {
         public static final int upperLimitPort = 0;
         public static final int lowerLimitPort = 1;
 
-        public static final double kP = 1.0;
+        public static final double kP = 0.5;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
-        public static final double maxSpeed = 0.5;
+        public static final double maxSpeed = 0.6;
         public static final double maxVelo = 1.0;
         public static final double maxAccel = 1.0;
     }
