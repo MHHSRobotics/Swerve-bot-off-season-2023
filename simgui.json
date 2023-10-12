@@ -62,6 +62,12 @@
       "/SmartDashboard/Field2d": {
         "Robot": {
           "arrows": false,
+          "color": [
+            247.5,
+            0.0,
+            255.0,
+            255.0
+          ],
           "length": 0.5,
           "style": "Box/Image",
           "width": 0.5
