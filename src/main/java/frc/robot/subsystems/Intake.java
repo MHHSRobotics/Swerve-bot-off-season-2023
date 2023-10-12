@@ -22,10 +22,10 @@ public class Intake extends SubsystemBase {
 
     public void intake(boolean dir) {
         if (dir) {
-            motor.set(1.0);
+            motor.set(Constants.IntakeConstants.intakeSpeed);
             //speedSim.set(1.0);
         } else {
-            motor.set(-1.0);
+            motor.set(-Constants.IntakeConstants.intakeSpeed);
             //speedSim.set(-1.0);
         }
     }

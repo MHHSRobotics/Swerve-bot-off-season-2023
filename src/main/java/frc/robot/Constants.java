@@ -41,6 +41,7 @@ public final class Constants {
 
     public static final class IntakeConstants {
         public static final int intakePort = 15;
+        public static final double intakeSpeed = 0.6;
     }
     
     public static final class SwerveConstants {
@@ -100,11 +101,11 @@ public final class Constants {
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.02391;
         public static final double driveKF = 0.0;
-
+        
         /* Drive Motor Characterization Values 
          * Divide SYSID values by 12 to convert from volts to percent output for CTRE */
-        public static final double driveKS = (0.79074 / 12); 
-        public static final double driveKV = (.194587 / 12);
+        public static final double driveKS = (0.4 / 12); 
+        public static final double driveKV = (.1 / 12);
         public static final double driveKA = (0.010932 / 12);
 
         /* Swerve Profiling Values */
