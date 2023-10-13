@@ -40,7 +40,7 @@ public class RobotContainer {
 
     private final Elevator elevator = new Elevator(assist);
 
-    //private final Intake intake = new Intake();
+    private final Intake intake = new Intake();
 
     /* Commands */
 
@@ -48,7 +48,7 @@ public class RobotContainer {
 
     private final Elevator_Commands elevator_Commands = new Elevator_Commands(elevator);
 
-    //private final Intake_Commands intake_Commands = new Intake_Commands(intake);
+    private final Intake_Commands intake_Commands = new Intake_Commands(intake);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -135,7 +135,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new BAB_Auto(swerve_Commands, elevator_Commands);
+        return new BAB_Auto(swerve_Commands, elevator_Commands, intake_Commands);
     }
     
     public void periodic() {
