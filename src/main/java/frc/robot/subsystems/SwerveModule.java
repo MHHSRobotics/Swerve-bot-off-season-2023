@@ -179,6 +179,8 @@ public class SwerveModule extends SubsystemBase{
     private void configAngleMotor(){
         angleMotor.restoreFactoryDefaults();
         angleMotor.setSmartCurrentLimit(Constants.SwerveConstants.angleContinuousCurrentLimit);
+        angleMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
+        angleMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
         angleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
         angleMotor.setIdleMode(Constants.SwerveConstants.angleNeutralMode);
         angleController.setP(Constants.SwerveConstants.angleKP*(2*Math.PI)/360);
@@ -197,6 +199,8 @@ public class SwerveModule extends SubsystemBase{
     private void configDriveMotor(){        
         driveMotor.restoreFactoryDefaults();
         driveMotor.setSmartCurrentLimit(Constants.SwerveConstants.driveContinuousCurrentLimit);
+        driveMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
+        driveMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
         driveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
         driveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);
         driveEncoder.setPosition(0);

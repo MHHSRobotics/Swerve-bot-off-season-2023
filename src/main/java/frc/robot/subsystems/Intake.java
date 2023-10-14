@@ -1,5 +1,7 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -10,12 +12,16 @@ import edu.wpi.first.hal.SimDevice.Direction;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-    private static CANSparkMax motor;
+    //private static CANSparkMax motor;
     //private static SimDevice motorSim;
     //private static SimDouble speedSim;
+    private static WPI_TalonSRX motor; 
 
     public Intake() {
-        motor = new CANSparkMax(Constants.IntakeConstants.intakePort, MotorType.kBrushless);
+        //motor = new CANSparkMax(Constants.IntakeConstants.intakePort, MotorType.kBrushless);
+        motor = new WPI_TalonSRX(Constants.IntakeConstants.intakePort);
+        motor.configPeakCurrentLimit(60);
+        motor.configPeakCurrentDuration(10);
         //motorSim = SimDevice.create("Intake Motor", 15);
         //speedSim = motorSim.createDouble("Speed", Direction.kInput, 0.0);
     }

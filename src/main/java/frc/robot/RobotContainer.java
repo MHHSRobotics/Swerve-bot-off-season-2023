@@ -98,15 +98,24 @@ public class RobotContainer {
         new JoystickButton(assist, XboxController.Button.kY.value)
         .onTrue(elevator_Commands.setPosition(3));
 
-        /*
+        /* 
+        new JoystickButton(assist, 2)
+        .onTrue(intake_Commands.runIntake())
+        .onFalse(intake_Commands.stopIntake());
+
+        new JoystickButton(assist, 3)
+        .onTrue(intake_Commands.reverseIntake())
+        .onFalse(intake_Commands.stopIntake());
+       */
+        
         new Trigger(createBooleanSupplier(assist, 3, 2))
         .onTrue(intake_Commands.runIntake())
         .onFalse(intake_Commands.stopIntake());
 
         new Trigger(createBooleanSupplier(assist, 2, 3))
         .onTrue(intake_Commands.reverseIntake())
-        .onFalse(intake_Commands.stopIntake());*/
-
+        .onFalse(intake_Commands.stopIntake());
+        
         //Create button binding for intake here.
     }
 
