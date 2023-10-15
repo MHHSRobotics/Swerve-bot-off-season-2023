@@ -58,7 +58,8 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(1),
                 () -> -driver.getRawAxis(0),
                 () -> -driver.getRawAxis(4), // CHANGE TO 2 FOR PS4
-                () -> robotCentric.getAsBoolean()
+                () -> robotCentric.getAsBoolean(),
+                () -> driver.getRawButton(6)
             ));
 
         //vision.setDefaultCommand(new AddVisionMeasurement(s_Swerve, vision));

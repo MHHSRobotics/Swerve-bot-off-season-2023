@@ -17,9 +17,9 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    
+    private BooleanSupplier precisionMode;
 
-    public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
+    public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier precisionMode) {
         this.s_Swerve = s_Swerve;
         addRequirements(s_Swerve);
 
@@ -27,6 +27,7 @@ public class TeleopSwerve extends CommandBase {
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
         this.robotCentricSup = robotCentricSup;
+        this.precisionMode = precisionMode;
     }
 
     @Override
@@ -37,11 +38,19 @@ public class TeleopSwerve extends CommandBase {
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
         /* Drive */
+        if (precisionMode.getAsBoolean()) {
         s_Swerve.drive(
             new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed), 
             rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
             !robotCentricSup.getAsBoolean(), 
             true
+        );} else {
+            s_Swerve.drive(
+            new Translation2d(translationVal, strafeVal).times(Constants.SwerveConstants.maxSpeed).div(3), 
+            rotationVal * Constants.SwerveConstants.maxAngularVelocity, 
+            !robotCentricSup.getAsBoolean(), 
+            true
         );
+        }
     }
 }
