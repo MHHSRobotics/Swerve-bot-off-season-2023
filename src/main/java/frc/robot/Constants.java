@@ -121,6 +121,7 @@ public final class Constants {
         /* Gear Ratio Stuff */
         
          public static final double angleRotationsToRadians = 360 /angleGearRatio; //Change to " 2 * Math.PI / angleGearRation" and then remove multipliers in SwerveModule class
+         //Make sure to change closed loop PID wrapping if changed above
          public static final double angleRPMToRadiansPerSecond = angleRotationsToRadians / 60.0; 
          public static final double driveRotationsToMeters = wheelCircumference/driveGearRatio;
          public static final double driveRPMToMetersPerSecond = driveRotationsToMeters/60.0;
