@@ -1,8 +1,8 @@
-package frc.robot.commands;
+package frc.robot.Commands;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.Vision;
+import frc.robot.Subsystems.Swerve;
+import frc.robot.Subsystems.Vision;
 
 import java.io.Console;
 

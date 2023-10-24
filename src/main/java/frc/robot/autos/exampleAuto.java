@@ -1,7 +1,7 @@
-package frc.robot.autos;
+package frc.robot.Autos;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve;
+import frc.robot.Subsystems.Swerve;
 
 import java.util.List;
 
