@@ -252,6 +252,8 @@ public class SwerveModule extends SubsystemBase{
 @Override
 public void periodic()
 {
+    System.out.println("speed" +driveMotor.get());
+    
 }
 @Override
   public void simulationPeriodic() {
