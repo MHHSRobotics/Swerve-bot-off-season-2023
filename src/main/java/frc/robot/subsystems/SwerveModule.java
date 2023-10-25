@@ -200,10 +200,10 @@ public class SwerveModule extends SubsystemBase{
         driveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
         driveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);
         driveEncoder.setPosition(0);
-        driveController.setP(Constants.SwerveConstants.angleKP);
-        driveController.setI(Constants.SwerveConstants.angleKI);
-        driveController.setD(Constants.SwerveConstants.angleKD);
-        driveController.setFF(Constants.SwerveConstants.angleKF);
+        driveController.setP(Constants.SwerveConstants.driveKP);
+        driveController.setI(Constants.SwerveConstants.driveKI);
+        driveController.setD(Constants.SwerveConstants.driveKD);
+        driveController.setFF(Constants.SwerveConstants.driveKF);
         driveEncoder.setPosition(0.0);
         driveEncoder.setPositionConversionFactor(Constants.SwerveConstants.driveRotationsToMeters);
         driveEncoder.setVelocityConversionFactor(Constants.SwerveConstants.driveRPMToMetersPerSecond);
