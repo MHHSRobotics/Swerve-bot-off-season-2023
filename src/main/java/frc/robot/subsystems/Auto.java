@@ -11,16 +11,22 @@ import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
+import frc.robot.Commands.Elevator_Commands;
+import frc.robot.Commands.Intake_Commands;
 
 /*This is an example auto subsystem, created by 5137, that can be used with PathPlanner (an frc community project for auto)*/
 public class Auto {
 
     private Swerve swerveDrive;
     private SwerveAutoBuilder swerveAutoBuilder;
+    private HashMap<String, Command> eventMap;
+    private Elevator_Commands elevator_Commands;
+    private Intake_Commands intake_Commands;
 
     /*The path group used to run an auto sequence from PathPlanner */
-    private ArrayList<PathPlannerTrajectory> exampleAuto = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("examplePath", new PathConstraints(4, 3));
+    private ArrayList<PathPlannerTrajectory> exampleAuto = (ArrayList<PathPlannerTrajectory>) PathPlanner.loadPathGroup("Cube8", new PathConstraints(4, 3));
 
 
     /**
@@ -30,7 +36,12 @@ public class Auto {
     public Auto(Swerve swerveDrive)
     {
         /*The swerve subsystem which is initialized for use by the auto system */
-        this.swerveDrive = swerveDrive; 
+        this.swerveDrive = swerveDrive;
+        eventMap = new HashMap<>(); 
+        eventMap.put("Extend", elevator_Commands.autoSetSpeed(0.6, 4));
+        eventMap.put("Retract", elevator_Commands.autoSetSpeed(-0.6, 4));
+        eventMap.put("ConeRelease", intake_Commands.autoIntake(true, 1));
+        eventMap.put("CubeRelease", intake_Commands.autoIntake(false, 1));
         
         /*The autobuilder which uses various inputs to control the robot during auto */
         swerveAutoBuilder = new SwerveAutoBuilder(
