@@ -145,7 +145,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new BAB_Auto(swerve_Commands, elevator_Commands, intake_Commands);
+        return m_auto.getAuto();
     }
     
     public void periodic() {
